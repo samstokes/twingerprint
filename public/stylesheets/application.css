@@ -1,3 +1,24 @@
 * {
   font-family: Tahoma, Arial, Helvetica, Sans;
 }
+
+.header {
+  border-bottom: 1px solid black;
+  margin-bottom: 2em;
+}
+
+.logo {
+  /* this is because I don't have a real logo */
+  font-size: 1em;
+  font-weight: bold;
+  font-style: italic;
+}
+
+.footer {
+  border-top: 1px solid black;
+  margin-top: 2em;
+}
+
+.copyright {
+  text-align: left;
+}

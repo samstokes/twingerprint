@@ -21,11 +21,21 @@
   </head>
   <body>
 
+    <div class="header container">
+      <%= render :partial => '/layouts/header' %>
+    </div>
+
     <%- [:error, :notice, :success].each do |item| -%>
       <%= content_tag :div, flash[item], :class => item.to_s if flash[item] -%>
     <%- end -%>
 
-    <%= yield %>
+    <div class="container main">
+      <%= yield %>
+    </div>
+
+    <div class="footer container">
+      <%= render :partial => '/layouts/footer' %>
+    </div>
 
   </body>
 </html>
