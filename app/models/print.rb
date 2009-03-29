@@ -10,7 +10,7 @@ class Print
     "#{user.name} (#{user.screen_name})"
   end
 
-  def word_data
+  def word_frequencies
     @timeline.tweets.inject(Hash.new(0)) do |word_freqs, tweet|
       tweet["text"].split(/[-\s]/).each do |word|
         word_freqs[word] += 1 unless ignore?(word)
