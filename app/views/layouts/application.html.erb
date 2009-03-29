@@ -6,9 +6,24 @@
     <title>
       <%= (title = yield :title).blank? ? 'Twingerprint' : "Twingerprint &ndash; #{title}" %>
     </title>
+
+    <!-- Blueprint CSS -->
+    <%= stylesheet_link_tag "blueprint/screen", :media => "screen, projection" %>
+    <%= stylesheet_link_tag "blueprint/print", :media => "print" %>
+    <!--[if IE]>
+      <%= stylesheet_link_tag "blueprint/ie", :media => "screen, projection" %>
+    <![endif]-->
+    <!-- end of Blueprint CSS -->
+
+    <!-- application CSS -->
     <%= stylesheet_link_tag "application" %>
+    <!-- end of application CSS -->
   </head>
   <body>
+
+    <%- [:error, :notice, :success].each do |item| -%>
+      <%= content_tag :div, flash[item], :class => item.to_s if flash[item] -%>
+    <%- end -%>
 
     <%= yield %>
 
