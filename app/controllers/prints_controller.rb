@@ -18,7 +18,7 @@ class PrintsController < ApplicationController
       words = Hash.new(0)
       tweets.each do |tweet|
         tweet.split(/[-\s]/).each do |word|
-          words[word] += 1 unless word.empty? || common_words.include?(word)
+          words[word] += 1 unless word.empty? || common_words.include?(word.downcase)
         end
       end
 
@@ -32,8 +32,10 @@ class PrintsController < ApplicationController
 
   private
   def common_words
-    %w(the to is a I in for and of on but that can with you at was not as have
-       it)
+    Set.new(%w(
+      the to is a i in for and of on but that can with you at was not as have
+      it your be my this by get i'm will or so if are we has
+    ))
   end
 
   def word_cloud(words_freqs)
