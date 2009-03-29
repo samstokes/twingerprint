@@ -27,7 +27,7 @@ class Print
   def common_words
     Set.new(%w(
       the to is a an i in for and of on but that can with you at was not as have
-      it your be my this by get i'm will or so if are we has
+      it your be my this by get i'm will or so if are we has rt
     ))
   end
 
