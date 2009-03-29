@@ -1,6 +1,7 @@
 class PrintsController < ApplicationController
 
   def show
+    @print = Print.new(params.fetch(:username)); return
     username = params.fetch(:username)
 
     Net::HTTP.start("twitter.com") do |http|
@@ -36,26 +37,6 @@ class PrintsController < ApplicationController
       the to is a i in for and of on but that can with you at was not as have
       it your be my this by get i'm will or so if are we has
     ))
-  end
-
-  def word_cloud(words_freqs)
-    words_freqs = words_freqs.sort {|x, y| y[1] <=> x[1] }[0,50]
-    # now words_freqs.first[0] is the most frequent word
-    max_freq, min_freq = words_freqs.first[1], words_freqs.last[1]
-    min_log_freq = Math.log(min_freq)
-    max_log_spread = Math.log(max_freq) - min_log_freq
-    max, min = 200.0, 50.0
-    scale = max - min
-
-    words = []
-    words_freqs.each do |word, freq|
-      log_spread = Math.log(freq) - min_log_freq
-      offset = log_spread / max_log_spread
-      size = min + scale * offset
-      words << "<span style='font-size: #{size.to_i}%'>#{word}</span>"
-    end
-
-    "<div style='width: 25em'>" + words.join("\n") + "</div>"
   end
 
 end

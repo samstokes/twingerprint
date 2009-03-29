@@ -1,2 +1,7 @@
-<h1>Prints#show</h1>
-<p>Find me in app/views/prints/show.html.erb</p>
+<h1><%= page_title(h(@print.title)) %></h1>
+
+<div class="container">
+  <div class="span-10">
+    <%= cloud(@print.word_data) %>
+  </div>
+</div>
