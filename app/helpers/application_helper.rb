@@ -2,6 +2,6 @@
 module ApplicationHelper
   def page_title(text)
     content_for(:title) { text }
-    content_tag(:h1, text)
+    text
   end
 end
