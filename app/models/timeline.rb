@@ -11,6 +11,6 @@ class Timeline
   format :json
   
   def tweets
-    self.class.get("http://twitter.com/statuses/user_timeline/#{username}.json?count=200")
+    @tweets ||= self.class.get("http://twitter.com/statuses/user_timeline/#{username}.json?count=200")
   end
 end
