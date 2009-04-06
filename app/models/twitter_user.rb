@@ -18,6 +18,10 @@ class TwitterUser
     data["screen_name"]
   end
 
+  def profile_image_url
+    data["profile_image_url"]
+  end
+
   private
   def data
     @data ||= self.class.get("http://twitter.com/users/show/#{username}.json")
