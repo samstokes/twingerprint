@@ -18,3 +18,11 @@
 .copyright {
   text-align: left;
 }
+
+.profile-image {
+  float: left;
+}
+
+.stat-units {
+  font-size: .8em;
+}
