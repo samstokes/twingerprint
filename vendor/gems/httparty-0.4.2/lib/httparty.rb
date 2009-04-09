@@ -2,8 +2,10 @@ $:.unshift(File.dirname(__FILE__))
 
 require 'net/http'
 require 'net/https'
-require 'core_extensions'
 require 'httparty/module_inheritable_attributes'
+require 'rubygems'
+gem 'crack'
+require 'crack'
 
 module HTTParty
   
@@ -16,7 +18,8 @@ module HTTParty
     'text/javascript'        => :json,
     'text/html'              => :html,
     'application/x-yaml'     => :yaml,
-    'text/yaml'              => :yaml
+    'text/yaml'              => :yaml,
+    'text/plain'             => :plain
   } unless defined?(AllowedFormats)
   
   def self.included(base)
@@ -99,7 +102,7 @@ module HTTParty
     #     format :json
     #   end
     def format(f)
-      raise UnsupportedFormat, "Must be one of: #{AllowedFormats.values.join(', ')}" unless AllowedFormats.value?(f)
+      raise UnsupportedFormat, "Must be one of: #{AllowedFormats.values.uniq.join(', ')}" unless AllowedFormats.value?(f)
       default_options[:format] = f
     end
     
@@ -164,13 +167,14 @@ module HTTParty
   end
 
   def self.normalize_base_uri(url) #:nodoc:
-    use_ssl = (url =~ /^https/) || url.include?(':443')
-    ends_with_slash = url =~ /\/$/
+    normalized_url = url.dup
+    use_ssl = (normalized_url =~ /^https/) || normalized_url.include?(':443')
+    ends_with_slash = normalized_url =~ /\/$/
     
-    url.chop! if ends_with_slash
-    url.gsub!(/^https?:\/\//i, '')
+    normalized_url.chop! if ends_with_slash
+    normalized_url.gsub!(/^https?:\/\//i, '')
     
-    "http#{'s' if use_ssl}://#{url}"
+    "http#{'s' if use_ssl}://#{normalized_url}"
   end
   
   class Basement #:nodoc:
@@ -195,7 +199,7 @@ module HTTParty
 end
 
 require 'httparty/cookie_hash'
+require 'httparty/core_extensions'
 require 'httparty/exceptions'
 require 'httparty/request'
 require 'httparty/response'
-require 'httparty/parsers'

@@ -19,6 +19,12 @@ describe HTTParty do
       @klass.base_uri('http://api.foobar.com')
       @klass.base_uri.should == 'http://api.foobar.com'
     end
+
+    it 'should not modify the parameter during assignment' do
+      uri = 'http://api.foobar.com'
+      @klass.base_uri(uri)
+      uri.should == 'http://api.foobar.com'
+    end
   end
   
   describe "#normalize_base_uri" do
@@ -35,6 +41,12 @@ describe HTTParty do
     it "should not remove https for ssl requests" do
       uri = HTTParty.normalize_base_uri('https://api.foo.com/v1:443')
       uri.should == 'https://api.foo.com/v1:443'
+    end
+
+    it 'should not modify the parameter' do
+      uri = 'http://api.foobar.com'
+      HTTParty.normalize_base_uri(uri)
+      uri.should == 'http://api.foobar.com'
     end
   end
   
@@ -149,11 +161,23 @@ describe HTTParty do
       @klass.default_options[:format].should == :yaml
     end
     
+    it "should allow plain" do
+      @klass.format :plain
+      @klass.default_options[:format].should == :plain
+    end
+    
     it 'should not allow funky format' do
       lambda do
         @klass.format :foobar
       end.should raise_error(HTTParty::UnsupportedFormat)
     end
+
+    it 'should only print each format once with an exception' do
+      lambda do
+        @klass.format :foobar
+      end.should raise_error(HTTParty::UnsupportedFormat, "Must be one of: json, plain, html, yaml, xml")
+    end
+
   end
 
   describe "with explicit override of automatic redirect handling" do
