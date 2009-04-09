@@ -10,7 +10,7 @@ Warbler::Config.new do |config|
   config.dirs = %w(app config lib log vendor tmp)
 
   # Additional files/directories to include, above those in config.dirs
-  # config.includes = FileList["db"]
+  config.includes = FileList["appengine-web.xml", "datastore-indexes.xml"]
 
   # Additional files/directories to exclude
   # config.excludes = FileList["lib/tasks/*"]
@@ -19,7 +19,7 @@ Warbler::Config.new do |config|
   # in lib (and not otherwise excluded) then they need not be mentioned here.
   # JRuby and JRuby-Rack are pre-loaded in this list.  Be sure to include your
   # own versions if you directly set the value
-  # config.java_libs += FileList["lib/java/*.jar"]
+  config.java_libs = []
 
   # Loose Java classes and miscellaneous files to be placed in WEB-INF/classes.
   # config.java_classes = FileList["target/classes/**.*"]
@@ -81,8 +81,8 @@ Warbler::Config.new do |config|
   # Control the pool of Rails runtimes. Leaving unspecified means
   # the pool will grow as needed to service requests. It is recommended
   # that you fix these values when running a production server!
-  # config.webxml.jruby.min.runtimes = 2
-  # config.webxml.jruby.max.runtimes = 4
+  config.webxml.jruby.min.runtimes = 1
+  config.webxml.jruby.max.runtimes = 1
 
   # JNDI data source name
   # config.webxml.jndi = 'jdbc/rails'
