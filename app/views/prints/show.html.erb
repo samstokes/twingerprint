@@ -4,11 +4,11 @@
 <h1><%= page_title(h(@print.title)) %></h1>
 
 <div class="container">
-  <div class="span-10 append-2">
+  <div class="span-11 append-2">
     <h2>Word cloud</h2>
     <%= cloud(@print.word_frequencies) %>
   </div>
-  <div class="span-10">
+  <div class="span-11 last">
     <h2>Statistics</h2>
     <% statistics = [
       [
@@ -23,14 +23,14 @@
       ],
     ] %>
     <% statistics.each do |statistic| %>
-      <div class="container stat">
-        <div class="span-5 stat-label">
+      <div class="stat">
+        <div class="span-6 stat-label">
           <%= statistic[0] %>
         </div>
         <div class="span-2 stat-units">
           (<%= statistic[1] %>)
         </div>
-        <div class="span-3 prepend-1 stat-value">
+        <div class="span-2 prepend-1 stat-value last">
           <%= statistic[2].to_f.round(1) %>
         </div>
       </div>
