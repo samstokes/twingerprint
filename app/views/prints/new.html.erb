@@ -1,0 +1,17 @@
+<h1>Twingerprint</h1>
+
+<% form_tag prints_path, :class => "new-print" do %>
+  <div class="container">
+    <div class="prepend-3 span-18 append-3">
+      <label for="username">
+        Type someone's Twitter user name here to see a summary of their Twitter
+        activity.
+      </label>
+    </div>
+  </div>
+  <div class="container">
+    <div class="prepend-3 span-18 append-3">
+      <%= text_field_tag :username %>
+    </div>
+  </div>
+<% end %>

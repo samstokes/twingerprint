@@ -19,6 +19,15 @@
   text-align: left;
 }
 
+form.new-print {
+  font-size: 125%;
+}
+
+form.new-print input {
+  width: 100%;
+  font-size: 125%;
+}
+
 .profile-image {
   float: left;
 }
