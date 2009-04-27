@@ -11,8 +11,8 @@ class Timeline
   format :json
   
   def tweets
-    @tweets ||= self.class.get("http://twitter.com/statuses/user_timeline/#{username}.json?count=200")
-    # TODO check the HTTP response code
+    # TODO make this somehow async; paged_tweets is a long synchronous call
+    @tweets ||= paged_tweets
   end
 
   def first
@@ -54,6 +54,47 @@ class Timeline
   private
   def tweet_date(tweet)
     tweet["created_at"]
+  end
+
+  def paged_tweets
+    paged = []
+    max_id = nil
+    while (page = page_of_tweets(max_id)).any?
+      Rails::logger.debug("got #{page.length} tweets for user #{username}")
+      paged += page
+      max_id = page.last.fetch('id').to_i - 1
+      raise "Unexpected 'id' in tweet: #{page.last['id']}" if max_id < 0
+    end
+    paged
+  end
+
+  def page_of_tweets(max_id = nil)
+    params = {
+      # This is tricky:
+      # * Having a small value for :count means we have to make more requests
+      #   to Twitter to get all a person's tweets, which uses up our API
+      #   request quota quicker.
+      # * Having a large value for :count seems to increase the likelihood of
+      #   getting a "Fail Whale" response in the case that there actually are
+      #   a lot of tweets to retrieve, thus rendering this likely to fail for
+      #   people with a lot of tweets.
+      #
+      # Solutions:
+      # * TODO fallback to only retrieving the last n tweets (where n is
+      #   small enough to avoid the wrath of the Whale)
+      # * TODO caching (so we don't retrieve *all* a user's tweets every time,
+      #   only those we haven't seen before)
+      :count => 500,
+    }
+    params[:max_id] = max_id if max_id
+
+    # N.B. this doesn't do any escaping, so make sure the hash is safe
+    encoded_params = params.map {|k, v| "#{k}=#{v}" }.join("&")
+
+    url = "http://twitter.com/statuses/user_timeline/#{username}.json?#{encoded_params}"
+    Rails::logger.debug("getting tweets: #{url}")
+    self.class.get(url)
+    # TODO check the HTTP response code
   end
 
 end
