@@ -12,6 +12,7 @@ class Timeline
   
   def tweets
     @tweets ||= self.class.get("http://twitter.com/statuses/user_timeline/#{username}.json?count=200")
+    # TODO check the HTTP response code
   end
 
   def first

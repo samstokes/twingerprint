@@ -25,5 +25,6 @@ class TwitterUser
   private
   def data
     @data ||= self.class.get("http://twitter.com/users/show/#{username}.json")
+    # TODO check the HTTP response code
   end
 end
