@@ -88,12 +88,9 @@ class Timeline
     }
     params[:max_id] = max_id if max_id
 
-    # N.B. this doesn't do any escaping, so make sure the hash is safe
-    encoded_params = params.map {|k, v| "#{k}=#{v}" }.join("&")
-
-    url = "http://twitter.com/statuses/user_timeline/#{username}.json?#{encoded_params}"
-    Rails::logger.debug("getting tweets: #{url}")
-    returning self.class.get(url) do |response|
+    url = "http://twitter.com/statuses/user_timeline/#{username}.json"
+    Rails::logger.debug("getting tweets: #{url}, #{params.inspect}")
+    returning self.class.get(url, :query => params) do |response|
       unless response.code.to_s =~ /^2/
         raise "Error getting tweets: " +
             "HTTP #{response.code} #{response.message}\n#{response.body}"
