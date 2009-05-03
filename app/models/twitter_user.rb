@@ -24,7 +24,16 @@ class TwitterUser
 
   private
   def data
-    @data ||= self.class.get("http://twitter.com/users/show/#{username}.json")
-    # TODO check the HTTP response code
+    @data ||= get_user_data
+  end
+
+  def get_user_data
+    url = "http://twitter.com/users/show/#{username}.json"
+    returning self.class.get(url) do |response|
+      unless response.code.to_s =~ /^2/
+        raise "Error getting user data: " +
+            "HTTP #{response.code} #{response.message}\n#{response.body}"
+      end
+    end
   end
 end

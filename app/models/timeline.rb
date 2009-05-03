@@ -93,8 +93,12 @@ class Timeline
 
     url = "http://twitter.com/statuses/user_timeline/#{username}.json?#{encoded_params}"
     Rails::logger.debug("getting tweets: #{url}")
-    self.class.get(url)
-    # TODO check the HTTP response code
+    returning self.class.get(url) do |response|
+      unless response.code.to_s =~ /^2/
+        raise "Error getting tweets: " +
+            "HTTP #{response.code} #{response.message}\n#{response.body}"
+      end
+    end
   end
 
 end
