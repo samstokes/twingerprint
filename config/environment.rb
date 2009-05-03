@@ -9,5 +9,5 @@ require File.join(File.dirname(__FILE__), 'boot')
 Rails::Initializer.run do |config|
   config.frameworks -= [:active_record]
 
-  config.gem 'httparty', :version => '>= 0.3.1'
+  config.gem 'httparty', :version => '>= 0.4.3'
 end
